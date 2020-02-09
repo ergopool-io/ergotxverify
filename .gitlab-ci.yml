@@ -32,6 +32,8 @@ stages:
 test:
   stage: test
   script:
+  - cd /builds/ergopool/customverifier
+  - export JAVA_HOME=/usr/local/openjdk-11
   - mkdir -p lib
   - cp -r ~/ergo-appkit/target/scala-2.12/* lib/
   - sbt clean test

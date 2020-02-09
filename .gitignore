@@ -7,7 +7,6 @@ target
 /.settings
 /RUNNING_PID
 /lib
-/test
 /logs
 /.g8
 *.log

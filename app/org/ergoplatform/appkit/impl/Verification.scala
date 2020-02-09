@@ -1,23 +1,17 @@
 package org.ergoplatform.appkit.impl
 
-import org.ergoplatform.appkit.config.ErgoToolConfig
-import org.ergoplatform.appkit.{Address, BlockchainContext, ErgoType, Iso, JavaHelpers, RestApiErgoClient, SignedTransaction}
-import org.ergoplatform.restapi.client.{ApiClient, Parameters}
-import org.ergoplatform.wallet.interpreter.ErgoInterpreter
-import org.ergoplatform.wallet.protocol.context.{ErgoLikeParameters, ErgoLikeStateContext, TransactionContext}
-import org.ergoplatform.{ErgoBox, ErgoLikeContext, ErgoLikeTransaction, ErgoLikeTransactionSerializer}
-import play.api.Configuration
-import com.typesafe.config
 import com.typesafe.config.ConfigFactory
+import org.ergoplatform.appkit.config.ErgoToolConfig
+import org.ergoplatform.appkit._
+import org.ergoplatform.restapi.client.{ApiClient, Parameters}
 import org.ergoplatform.validation.ValidationRules
+import org.ergoplatform.wallet.interpreter.ErgoInterpreter
+import org.ergoplatform.wallet.protocol.context.{ErgoLikeParameters, TransactionContext}
+import org.ergoplatform.{ErgoBox, ErgoLikeContext, ErgoLikeTransaction}
+import play.api.Configuration
 import scorex.crypto.authds.ADDigest
-import scorex.util.encode.Base16
 import sigmastate.eval.CPreHeader
 import sigmastate.interpreter.{ContextExtension, ProverResult}
-import sigmastate.serialization.{ConstantStore, SigmaSerializer}
-import sigmastate.utils.SigmaByteReader
-import special.collection.Coll
-import special.sigma.{Header, PreHeader}
 
 class Verification {
 

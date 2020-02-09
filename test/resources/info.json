@@ -1,0 +1,33 @@
+{
+  "currentTime": 1581237939042,
+  "name": "vorujack`s-testnet-node",
+  "stateType": "utxo",
+  "difficulty": 4384751616,
+  "bestFullHeaderId": "a680542bd9ee2ee27d693962d490eb83b391f87d990cb2bfe926b85a5e740ec5",
+  "bestHeaderId": "a680542bd9ee2ee27d693962d490eb83b391f87d990cb2bfe926b85a5e740ec5",
+  "peersCount": 32,
+  "unconfirmedCount": 2,
+  "appVersion": "--SNAPSHOT",
+  "stateRoot": "4f3a6b744e3b69f59f14ccc6f8b85989bbde28a32a8baef34a1319a5be32d09414",
+  "genesisBlockId": "f654fccd73b388177a7363788296c900475590e08cf8e945beb721064ebc3658",
+  "previousFullHeaderId": "d4797cedbc17eb7b64d73b0d6973d601d7187c18d427565ff1dba9f606b2558b",
+  "fullHeight": 101513,
+  "headersHeight": 101513,
+  "stateVersion": "a680542bd9ee2ee27d693962d490eb83b391f87d990cb2bfe926b85a5e740ec5",
+  "fullBlocksScore": 138946811555840,
+  "launchTime": 1581182849165,
+  "headersScore": 138946811555840,
+  "parameters": {
+    "outputCost": 100,
+    "tokenAccessCost": 100,
+    "maxBlockCost": 1196140,
+    "height": 101376,
+    "maxBlockSize": 524288,
+    "dataInputCost": 100,
+    "blockVersion": 1,
+    "inputCost": 2000,
+    "storageFeeFactor": 1250000,
+    "minValuePerByte": 360
+  },
+  "isMining": true
+}

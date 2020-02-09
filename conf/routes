@@ -3,6 +3,6 @@
 # https://www.playframework.com/documentation/latest/ScalaRouting
 # ~~~~
 
-POST     /verify                           controllers.HomeController.verify_tx
+POST     /verify                           controllers.VerifyController.verify_tx
 
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

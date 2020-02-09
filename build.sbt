@@ -25,6 +25,7 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty" % "jetty-server" % "9.4.24.v20191120"
 )
 
+libraryDependencies += "org.ergoplatform" % "ergo-wallet_2.12" % "3.2.0"
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "io.ergopool.controllers._"

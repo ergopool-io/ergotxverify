@@ -17,6 +17,7 @@ class Verification {
 
   /**
    * verifies a transaction in custom context; throws errors in case of invalid inputs
+   * if someday appkit interface get changed for any reason, this must be changed too!
    * @param txs tansaction to be verified
    * @param minerPk miner public key to put in the custom context
    * @return true if verification succeed, false otherwise
@@ -71,6 +72,7 @@ class Verification {
 
   /**
    * creates ErgoLikeContext used in verifier
+   * if someday appkit changes this for any reason, this must be changed too!
    * @param ctx current blockchain context
    * @param minerPk miner public key
    * @param boxesToSpend spent boxes in transaction
@@ -108,8 +110,8 @@ class Verification {
 
   /**
    * extracts necessary info to build ErgoLikeParameter instance
-   * this code is based on how appkit does this, if someday appkit changes this
-   * for any reason, this must be changed too!
+   * this code is based on how appkit does this
+   * if someday appkit changes this for any reason, this must be changed too!
    * @param ctx BlockchainContext instance
    * @return ErgoLikeParameter instance
    */

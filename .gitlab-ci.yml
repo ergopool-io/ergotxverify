@@ -1,0 +1,36 @@
+image: "openjdk:11-jre-slim"
+
+
+before_script:
+  - apt-get update -qy
+  - apt-get install -y --no-install-recommends apt-transport-https apt-utils bc dirmngr gnupg
+  - echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
+  - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
+  - echo "dash hold" | dpkg --set-selections
+  - apt-get update -qy
+  - apt-get upgrade -y
+  - apt-get install -y --no-install-recommends sbt
+  - apt-get install git -y
+  - apt-get install wget -
+  - cd ~ 
+  - echo $JAVA_HOME
+  - wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-19.3.1/graalvm-ce-java8-linux-amd64-19.3.1.tar.gz
+  - tar -xf graalvm-ce-java8-linux-amd64-19.3.1.tar.gz
+  - git clone --single-branch --branch develop https://github.com/aslesarenko/ergo-appkit.git
+  - cd ergo-appkit
+  - rm -rf target 2> /dev/null
+  - export JAVA_HOME=/root/graalvm-ce-java8-19.3.1 
+  - export PATH=$PATH:${JAVA_HOME}/bin
+  - sbt assembly
+
+stages:
+  - test
+
+test:
+  stage: test
+  script:
+  - cd /builds/ergopool/customverifier
+  - export JAVA_HOME=/usr/local/openjdk-11
+  - mkdir -p lib
+  - cp -r ~/ergo-appkit/target/scala-2.12/* lib/
+  - sbt clean test

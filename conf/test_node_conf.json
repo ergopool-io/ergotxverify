@@ -1,0 +1,9 @@
+{
+  "node": {
+    "nodeApi": {
+      "apiUrl": "http://localhost:9001/",
+      "apiKey": "623f4e8e440007f45020afabbf56d8ba43144778757ea88497c794ad529a0433"
+    },
+    "networkType": "TESTNET"
+  }
+}

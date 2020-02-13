@@ -1,9 +1,0 @@
-{
-  "node": {
-    "nodeApi": {
-      "apiUrl": "http://46.4.17.81:9052/",
-      "apiKey": "623f4e8e440007f45020afabbf56d8ba43144778757ea88497c794ad529a0433"
-    },
-    "networkType": "TESTNET"
-  }
-}

@@ -1,8 +1,10 @@
 package org.ergoplatform.appkit.impl
 
+import java.io.StringReader
+
 import com.typesafe.config.ConfigFactory
-import org.ergoplatform.appkit.config.ErgoToolConfig
 import org.ergoplatform.appkit._
+import org.ergoplatform.appkit.config.ErgoToolConfig
 import org.ergoplatform.restapi.client.{ApiClient, Parameters}
 import org.ergoplatform.validation.ValidationRules
 import org.ergoplatform.wallet.interpreter.ErgoInterpreter
@@ -26,7 +28,23 @@ class Verification {
     val config = Configuration(ConfigFactory.load()) // app configuration
     val confFile = config.getOptional[String]("node.configuration").orNull
 
-    val conf = ErgoToolConfig.load(confFile)
+    val node_host = config.getOptional[String]("node.host").orNull
+    val node_port = config.getOptional[String]("node.port").orNull
+    val secret = config.getOptional[String]("node.secret").orNull
+    val network_type = config.getOptional[String]("node.network_type").orNull
+
+    val node_conf =s"""{
+        |  "node": {
+        |    "nodeApi": {
+        |      "apiUrl": "$node_host:$node_port/",
+        |      "apiKey": "$secret"
+        |    },
+        |    "networkType": "$network_type"
+        |  }
+        |}""".stripMargin
+
+    val conf = ErgoToolConfig.load(new StringReader(node_conf))
+
     val ergoClient = RestApiErgoClient.create(conf.getNode)
     ergoClient.execute((ctx: BlockchainContext) => {
       val ctxImpl = ctx.asInstanceOf[BlockchainContextImpl]

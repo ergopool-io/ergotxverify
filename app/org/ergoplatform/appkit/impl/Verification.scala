@@ -103,6 +103,10 @@ class Verification {
   }
 
 
+  def addressToPk(address: String): String = {
+    Base16.encode(Address.create(address).getPublicKey.pkBytes)
+  }
+
   /**
    * creates ErgoLikeContext used in verifier
    * if someday appkit changes this for any reason, this must be changed too!

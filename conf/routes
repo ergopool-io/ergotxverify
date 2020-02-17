@@ -5,4 +5,5 @@
 
 POST     /verify                           controllers.VerifyController.verify_tx
 GET      /get_id                           controllers.VerifyController.get_id
+GET      /address_to_pk                    controllers.VerifyController.address_to_pk
 

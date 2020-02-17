@@ -15,10 +15,10 @@ class VerifyController @Inject()(val controllerComponents: ControllerComponents)
    * verifies the provided transaction using custom context with provided minerPk
    * body must have the following structure:
    * {
-   *  "minerPk": "",
-   *  "transaction": {
-   *    the transaction
-   *  }
+   * "minerPk": "",
+   * "transaction": {
+   * the transaction
+   * }
    * }
    */
   def verify_tx: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
@@ -62,5 +62,46 @@ class VerifyController @Inject()(val controllerComponents: ControllerComponents)
           ).as("application/json")
       }
     }
+  }
+
+  def get_id: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val verifier = new Verification
+    val js = io.circe.parser.parse(request.body.asJson.get.toString()).getOrElse(Json.Null)
+    if (js == Json.Null) {
+      BadRequest(
+        s"""
+           |{
+           |  "success": false,
+           |  "message": "transaction must be present."
+           |}
+           |""".stripMargin
+      ).as("application/json")
+
+    } else {
+      try {
+        val result = verifier.getTxId(js.noSpaces)
+        Ok(
+          s"""
+             |{
+             |  "success": true,
+             |  "id": "${result}"
+             |}
+             |""".stripMargin
+        ).as("application/json")
+
+      } catch {
+        case ex =>
+          ex.getStackTrace
+          BadRequest(
+            s"""
+               |{
+               |  "success": false,
+               |  "message": "${ex.getMessage}"
+               |}
+               |""".stripMargin
+          ).as("application/json")
+      }
+    }
+
   }
 }

@@ -12,6 +12,8 @@ import org.ergoplatform.wallet.protocol.context.{ErgoLikeParameters, Transaction
 import org.ergoplatform.{ErgoBox, ErgoLikeContext, ErgoLikeTransaction}
 import play.api.Configuration
 import scorex.crypto.authds.ADDigest
+import scorex.crypto.hash.Blake2b256
+import scorex.util.encode.Base16
 import sigmastate.eval.CPreHeader
 import sigmastate.interpreter.{ContextExtension, ProverResult}
 
@@ -25,25 +27,7 @@ class Verification {
    * @return true if verification succeed, false otherwise
    */
   def verify(txs: String, minerPk: String): Boolean = {
-    val config = Configuration(ConfigFactory.load()) // app configuration
-    val confFile = config.getOptional[String]("node.configuration").orNull
-
-    val node_host = config.getOptional[String]("node.host").orNull
-    val node_port = config.getOptional[String]("node.port").orNull
-    val secret = config.getOptional[String]("node.secret").orNull
-    val network_type = config.getOptional[String]("node.network_type").orNull
-
-    val node_conf =s"""{
-        |  "node": {
-        |    "nodeApi": {
-        |      "apiUrl": "$node_host:$node_port/",
-        |      "apiKey": "$secret"
-        |    },
-        |    "networkType": "$network_type"
-        |  }
-        |}""".stripMargin
-
-    val conf = ErgoToolConfig.load(new StringReader(node_conf))
+    val conf = getNodeConf()
 
     val ergoClient = RestApiErgoClient.create(conf.getNode)
     ergoClient.execute((ctx: BlockchainContext) => {
@@ -85,8 +69,39 @@ class Verification {
       return res
     })
 
-    return false
+    false
   }
+
+  def getTxId(txs: String): String = {
+    val conf = getNodeConf()
+    val ergoClient = RestApiErgoClient.create(conf.getNode)
+    ergoClient.execute((ctx: BlockchainContext) => {
+      val transaction = ctx.signedTxFromJson(txs).asInstanceOf[SignedTransactionImpl].getTx
+      return Base16.encode(Blake2b256.hash(transaction.messageToSign))
+    })
+  }
+
+  def getNodeConf(): ErgoToolConfig = {
+    val config = Configuration(ConfigFactory.load()) // app configuration
+
+    val node_host = config.getOptional[String]("node.host").orNull
+    val node_port = config.getOptional[String]("node.port").orNull
+    val secret = config.getOptional[String]("node.secret").orNull
+    val network_type = config.getOptional[String]("node.network_type").orNull
+
+    val node_conf =s"""{
+                      |  "node": {
+                      |    "nodeApi": {
+                      |      "apiUrl": "$node_host:$node_port/",
+                      |      "apiKey": "$secret"
+                      |    },
+                      |    "networkType": "$network_type"
+                      |  }
+                      |}""".stripMargin
+
+    ErgoToolConfig.load(new StringReader(node_conf))
+  }
+
 
   /**
    * creates ErgoLikeContext used in verifier

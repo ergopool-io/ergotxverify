@@ -104,4 +104,46 @@ class VerifyController @Inject()(val controllerComponents: ControllerComponents)
     }
 
   }
+
+  def address_to_pk: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    val verifier = new Verification
+    var js = request.body.asJson.get.toString()
+    js = js.slice(1, js.length - 1)
+    if (js == null) {
+      BadRequest(
+        s"""
+           |{
+           |  "success": false,
+           |  "message": "address must be present!"
+           |}
+           |""".stripMargin
+      ).as("application/json")
+
+    } else {
+      try {
+        val result = verifier.addressToPk(js)
+        Ok(
+          s"""
+             |{
+             |  "success": true,
+             |  "id": "${result}"
+             |}
+             |""".stripMargin
+        ).as("application/json")
+
+      } catch {
+        case ex =>
+          ex.getStackTrace
+          BadRequest(
+            s"""
+               |{
+               |  "success": false,
+               |  "message": "${ex.getMessage}"
+               |}
+               |""".stripMargin
+          ).as("application/json")
+      }
+    }
+
+  }
 }

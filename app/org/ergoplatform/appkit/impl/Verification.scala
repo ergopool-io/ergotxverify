@@ -92,7 +92,7 @@ class Verification {
     val node_conf =s"""{
                       |  "node": {
                       |    "nodeApi": {
-                      |      "apiUrl": "$node_host:$node_port/",
+                      |      "apiUrl": "http://$node_host:$node_port/",
                       |      "apiKey": "$secret"
                       |    },
                       |    "networkType": "$network_type"

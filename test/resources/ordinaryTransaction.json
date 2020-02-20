@@ -1,0 +1,48 @@
+{
+  "minerPk": "3WxKPG68rjAN6U5LFmv8q5PBiN8QohfomfxoqbiVW7nr73foCfjd",
+  "transaction": {
+    "id": "fda0142e4bf6caeec81c3e45ace733bd9634c1f3b9c70a302b4ec498979b86d7",
+    "inputs": [
+      {
+        "boxId": "cd49e6bf930739e99e6b096979e4121102a50dd6b99eaa9e3b72e6d8dbd4a882",
+        "spendingProof": {
+          "proofBytes": "2ca8bc44ba6e6b8ea0082506d75b29fe0b68bbbc32e78dc9e0e154277782e06fdbfcd5b2e5dab41ac56dff43264926684d1119842916cfb9",
+          "extension": {}
+        }
+      }
+    ],
+    "dataInputs": [],
+    "outputs": [
+      {
+        "boxId": "41235983336dd15b1ec05ea4fb150e2012396f85924b566552d6de52e3a0a4e0",
+        "value": 10000000,
+        "ergoTree": "10020702ef1727494635a427e044857fc420132b5c5c33aa13cfa590e12b3382a26e7d5608cd02ef1727494635a427e044857fc420132b5c5c33aa13cfa590e12b3382a26e7d56ea02d193db6906db6503fe73007301",
+        "creationHeight": 101511,
+        "assets": [],
+        "additionalRegisters": {},
+        "transactionId": "fda0142e4bf6caeec81c3e45ace733bd9634c1f3b9c70a302b4ec498979b86d7",
+        "index": 0
+      },
+      {
+        "boxId": "14190d21c79d4cc6ee669f3ba68e48a161759f3507f0f11547aed38a8b12279a",
+        "value": 1000000,
+        "ergoTree": "1005040004000e36100204a00b08cd0279be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798ea02d192a39a8cc7a701730073011001020402d19683030193a38cc7b2a57300000193c2b2a57301007473027303830108cdeeac93b1a57304",
+        "creationHeight": 101511,
+        "assets": [],
+        "additionalRegisters": {},
+        "transactionId": "fda0142e4bf6caeec81c3e45ace733bd9634c1f3b9c70a302b4ec498979b86d7",
+        "index": 1
+      },
+      {
+        "boxId": "f5daab0efab52d6809a82f6dc34c2a5b0bad0de7bfbdd5e4b4bfb819ce99fb6f",
+        "value": 9754000000,
+        "ergoTree": "0008cd02ef1727494635a427e044857fc420132b5c5c33aa13cfa590e12b3382a26e7d56",
+        "creationHeight": 101511,
+        "assets": [],
+        "additionalRegisters": {},
+        "transactionId": "fda0142e4bf6caeec81c3e45ace733bd9634c1f3b9c70a302b4ec498979b86d7",
+        "index": 2
+      }
+    ]
+  }
+}

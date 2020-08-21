@@ -23,14 +23,14 @@ RUN sbt update
 
 COPY ergo-appkit /ergo-appkit
 WORKDIR /ergo-appkit
-RUN sbt assembly
+RUN sbt "set logLevel in assembly := Level.Error" assembly
 
 ENV JAVA_HOME="/usr/local/openjdk-11"
 ENV PATH="${JAVA_HOME}/bin:$PATH"
 COPY . /customverifier
 RUN mkdir /customverifier/lib && cp -r /ergo-appkit/target/scala-2.12/* /customverifier/lib/
 WORKDIR /customverifier
-RUN sbt assembly
+RUN sbt "set logLevel in assembly := Level.Error" assembly
 RUN mv `find . -name tx-verify-assembly*` /tx-verify.jar
 CMD ["java", "-jar", "/tx-verify.jar"]
 

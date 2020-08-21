@@ -1,36 +1,45 @@
-image: "openjdk:11-jre-slim"
+image: docker:19.03.12
+services:
+  - name: docker:19.03.12-dind
 
-
-before_script:
-  - apt-get update -qy
-  - apt-get install -y --no-install-recommends apt-transport-https apt-utils bc dirmngr gnupg
-  - echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
-  - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 2EE0EA64E40A89B84B2DF73499E82A75642AC823
-  - echo "dash hold" | dpkg --set-selections
-  - apt-get update -qy
-  - apt-get upgrade -y
-  - apt-get install -y --no-install-recommends sbt
-  - apt-get install git -y
-  - apt-get install wget -
-  - cd ~ 
-  - echo $JAVA_HOME
-  - wget https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-19.3.1/graalvm-ce-java8-linux-amd64-19.3.1.tar.gz
-  - tar -xf graalvm-ce-java8-linux-amd64-19.3.1.tar.gz
-  - git clone --single-branch --branch develop https://github.com/aslesarenko/ergo-appkit.git
-  - cd ergo-appkit
-  - rm -rf target 2> /dev/null
-  - export JAVA_HOME=/root/graalvm-ce-java8-19.3.1 
-  - export PATH=$PATH:${JAVA_HOME}/bin
-  - sbt assembly
+variables:
+    CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:test
+    CONTAINER_DEV_IMAGE: $CI_REGISTRY_IMAGE:dev
+    CONTAINER_RELEASE_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
 
 stages:
-  - test
+  - build_test
+  - release_dev
+  - release
 
-test:
-  stage: test
+before_script:
+  - apk update && apk add git
+  - git clone --single-branch --branch=develop https://github.com/ergoplatform/ergo-appkit.git
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+
+build_test:
+  stage: build_test
+
   script:
-  - cd /builds/ergopool/customverifier
-  - export JAVA_HOME=/usr/local/openjdk-11
-  - mkdir -p lib
-  - cp -r ~/ergo-appkit/target/scala-2.12/* lib/
-  - sbt clean test
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+
+release_dev:
+  stage: release_dev
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - docker pull $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_DEV_IMAGE
+    - docker push $CONTAINER_DEV_IMAGE
+
+release:
+  stage: release
+  rules:
+    - if: '$CI_COMMIT_TAG'
+  script:
+    - docker build --cache-from $CI_REGISTRY_IMAGE:dev -t $CONTAINER_RELEASE_IMAGE .
+    - docker push $CONTAINER_RELEASE_IMAGE
